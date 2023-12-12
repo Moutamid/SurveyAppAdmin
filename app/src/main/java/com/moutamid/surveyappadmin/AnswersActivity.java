@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.graphics.drawable.ColorDrawable;
 import android.icu.lang.UCharacter;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,29 +25,33 @@ public class AnswersActivity extends AppCompatActivity {
     ArrayList<String> questions;
     ArrayList<String> answers;
     RecyclerView recyclerView;
+    String type;
+    TextView comments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answers);
+        comments = findViewById(R.id.comments);
         recyclerView = findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(AnswersActivity.this));
         recyclerView.setHasFixedSize(false);
         questions = new ArrayList<>();
         answers = new ArrayList<>();
         String name = getIntent().getStringExtra("name");
-        getData(name);
+        type = getIntent().getStringExtra("type");
+        getData(name, type);
 
     }
 
-    private void getData(String name) {
+    private void getData(String name, String type) {
         Dialog lodingbar = new Dialog(AnswersActivity.this);
 
         lodingbar.setContentView(R.layout.loading);
         Objects.requireNonNull(lodingbar.getWindow()).setBackgroundDrawable(new ColorDrawable(UCharacter.JoiningType.TRANSPARENT));
         lodingbar.setCancelable(false);
         lodingbar.show();
-        Constants.Abschlussfragebogen.child(name)
+        Constants.UserReference.child(type).child(name)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -54,15 +59,19 @@ public class AnswersActivity extends AppCompatActivity {
                             questions.clear();
                             answers.clear();
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                String questionText = dataSnapshot.child("questionText").getValue().toString();
-                                String selectedOptionText = dataSnapshot.child("selectedOptionText").getValue().toString();
-                                if (!questions.contains(questionText))
-                                {
-                                    questions.add(questionText);
+                                if (dataSnapshot.child("questionText").exists()) {
+                                    String questionText = dataSnapshot.child("questionText").getValue().toString();
+                                    String selectedOptionText = dataSnapshot.child("selectedOptionText").getValue().toString();
+                                    if (!questions.contains(questionText)) {
+                                        questions.add(questionText);
+                                    }
+                                    if (!answers.contains(selectedOptionText)) {
+                                        answers.add(selectedOptionText);
+                                    }
                                 }
-                                if (!answers.contains(selectedOptionText))
+                                if(dataSnapshot.child("comments").exists())
                                 {
-                                    answers.add(selectedOptionText);
+                                    comments.setText(dataSnapshot.child("comments").getValue().toString());
                                 }
                             }
                         }

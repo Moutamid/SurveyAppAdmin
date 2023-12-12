@@ -23,6 +23,7 @@ import java.util.Objects;
 public class UsersActivity extends AppCompatActivity {
     ArrayList<String> list;
     RecyclerView recyclerView;
+    String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +32,13 @@ public class UsersActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(UsersActivity.this));
         recyclerView.setHasFixedSize(false);
+        type= getIntent().getStringExtra("type");
         list = new ArrayList<>();
-        getData();
+        getData(type);
 
     }
 
-    private void getData() {
+    private void getData(String type) {
         Dialog lodingbar = new Dialog(UsersActivity.this);
 
         lodingbar.setContentView(R.layout.loading);
@@ -52,13 +54,12 @@ public class UsersActivity extends AppCompatActivity {
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                                     list.add(dataSnapshot1.getKey());
-
                                 }
                             }
                         }
 
                         lodingbar.dismiss();
-                        UserListAdapter adapter = new UserListAdapter(UsersActivity.this, list);
+                        UserListAdapter adapter = new UserListAdapter(UsersActivity.this, list, type);
                         recyclerView.setAdapter(adapter);
 
                     }

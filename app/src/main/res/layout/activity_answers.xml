@@ -20,7 +20,26 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:listitem="@layout/message_layout" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:fontFamily="@font/poppins_bold"
+        android:textSize="14sp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10sp"
 
+        android:text="Comments" />
+    <TextView
+        android:id="@+id/comments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="13sp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10sp"
+        android:text="Survey Answers" />
 </LinearLayout>

@@ -18,16 +18,17 @@ import java.util.ArrayList;
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ChatListVH> {
     Context context;
     ArrayList<String> list;
-
-    public UserListAdapter(Context context, ArrayList<String> list) {
+    String type;
+    public UserListAdapter(Context context, ArrayList<String> list, String type) {
         this.context = context;
         this.list = list;
+        this.type = type;
     }
 
     @NonNull
     @Override
     public ChatListVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ChatListVH(LayoutInflater.from(context).inflate(R.layout.message_layout, parent, false));
+        return new ChatListVH(LayoutInflater.from(context).inflate(R.layout.answers_layout, parent, false));
     }
 
     @Override
@@ -36,13 +37,14 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ChatLi
         String[] parts = s.split("___");
         if (parts.length >= 2) {
             String result = parts[1];
-            holder.name.setText(result);
+            holder.name.setText(s);
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, AnswersActivity.class);
                 intent.putExtra("name", s);
+                intent.putExtra("type", type);
                 context.startActivity(intent);
             }
         });
