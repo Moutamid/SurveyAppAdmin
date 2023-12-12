@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,11 +19,9 @@ import java.util.ArrayList;
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ChatListVH> {
     Context context;
     ArrayList<String> list;
-    String type;
-    public UserListAdapter(Context context, ArrayList<String> list, String type) {
+    public UserListAdapter(Context context, ArrayList<String> list) {
         this.context = context;
         this.list = list;
-        this.type = type;
     }
 
     @NonNull
@@ -37,14 +36,14 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ChatLi
         String[] parts = s.split("___");
         if (parts.length >= 2) {
             String result = parts[1];
-            holder.name.setText(s);
+            holder.name.setText(result);
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, AnswersActivity.class);
                 intent.putExtra("name", s);
-                intent.putExtra("type", type);
+//                Toast.makeText(context, "name"+ list.get(holder.getAdapterPosition())+"  ", Toast.LENGTH_SHORT).show();
                 context.startActivity(intent);
             }
         });

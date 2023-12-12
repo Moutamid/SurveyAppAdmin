@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fxn.stash.Stash;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -23,7 +24,6 @@ import java.util.Objects;
 public class UsersActivity extends AppCompatActivity {
     ArrayList<String> list;
     RecyclerView recyclerView;
-    String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,34 +32,31 @@ public class UsersActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(UsersActivity.this));
         recyclerView.setHasFixedSize(false);
-        type= getIntent().getStringExtra("type");
         list = new ArrayList<>();
-        getData(type);
+        getData();
 
     }
 
-    private void getData(String type) {
+    private void getData() {
         Dialog lodingbar = new Dialog(UsersActivity.this);
 
         lodingbar.setContentView(R.layout.loading);
         Objects.requireNonNull(lodingbar.getWindow()).setBackgroundDrawable(new ColorDrawable(UCharacter.JoiningType.TRANSPARENT));
         lodingbar.setCancelable(false);
         lodingbar.show();
-        Constants.UserReference
+        Constants.UserReference.child(Stash.getString("survey_type"))
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
                             list.clear();
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                    list.add(dataSnapshot1.getKey());
-                                }
+                                    list.add(dataSnapshot.getKey());
                             }
                         }
 
                         lodingbar.dismiss();
-                        UserListAdapter adapter = new UserListAdapter(UsersActivity.this, list, type);
+                        UserListAdapter adapter = new UserListAdapter(UsersActivity.this, list);
                         recyclerView.setAdapter(adapter);
 
                     }

@@ -33,10 +33,23 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.ChatListVH
     @Override
     public void onBindViewHolder(@NonNull ChatListVH holder, int position)
     {
-        String s = list.get(holder.getAdapterPosition());
-        String answers = answer.get(holder.getAdapterPosition());
-        holder.name.setText(s);
-        holder.answer.setText(answers);
+        if (position < list.size() && position < answer.size()) {
+            String s = list.get(position);
+            String answers = answer.get(position);
+
+            // Check for null values
+            if (s != null) {
+                holder.name.setText(s);
+            } else {
+                holder.name.setText("N/A");
+            }
+
+            if (answers != null) {
+                holder.answer.setText(answers);
+            } else {
+                holder.answer.setText("N/A");
+            }
+        }
     }
 
     @Override
@@ -49,7 +62,7 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.ChatListVH
 
         public ChatListVH(@NonNull View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.name);
+            name = itemView.findViewById(R.id.question);
             answer = itemView.findViewById(R.id.answer);
         }
     }

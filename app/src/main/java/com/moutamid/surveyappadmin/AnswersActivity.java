@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.graphics.drawable.ColorDrawable;
 import android.icu.lang.UCharacter;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fxn.stash.Stash;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -39,7 +41,7 @@ public class AnswersActivity extends AppCompatActivity {
         questions = new ArrayList<>();
         answers = new ArrayList<>();
         String name = getIntent().getStringExtra("name");
-        type = getIntent().getStringExtra("type");
+        type = Stash.getString("survey_type");
         getData(name, type);
 
     }
@@ -60,15 +62,14 @@ public class AnswersActivity extends AppCompatActivity {
                             answers.clear();
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                                 if (dataSnapshot.child("questionText").exists()) {
+                                    Log.d("dataa", dataSnapshot.toString());
+//                                if (dataSnapshot.child("questionText").exists()) {
                                     String questionText = dataSnapshot.child("questionText").getValue().toString();
                                     String selectedOptionText = dataSnapshot.child("selectedOptionText").getValue().toString();
-                                    if (!questions.contains(questionText)) {
-                                        questions.add(questionText);
-                                    }
-                                    if (!answers.contains(selectedOptionText)) {
-                                        answers.add(selectedOptionText);
-                                    }
+                                    questions.add(questionText);
+                                    answers.add(selectedOptionText);
                                 }
+
                                 if(dataSnapshot.child("comments").exists())
                                 {
                                     comments.setText(dataSnapshot.child("comments").getValue().toString());

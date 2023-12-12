@@ -7,6 +7,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fxn.stash.Stash;
 import com.moutamid.surveyappadmin.helper.Config;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent= new Intent(MainActivity.this, UsersActivity.class);
-                intent.putExtra("type", "BewertungDerFahrt");
+                Stash.put("survey_type","BewertungDerFahrt");
                 startActivity(intent);
             }
         });
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent= new Intent(MainActivity.this, UsersActivity.class);
-                intent.putExtra("type", "Vorabfragebogen");
+                Stash.put("survey_type","Vorabfragebogen");
                 startActivity(intent);
             }
         });
@@ -41,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, UsersActivity.class);
-                intent.putExtra("type", "Abschlussfragebogen");
+                Stash.put("survey_type","Abschlussfragebogen");
+
                 startActivity(intent);
             }
         });
