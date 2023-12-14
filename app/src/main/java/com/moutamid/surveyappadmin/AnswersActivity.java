@@ -28,13 +28,13 @@ public class AnswersActivity extends AppCompatActivity {
     ArrayList<String> answers;
     RecyclerView recyclerView;
     String type;
-    TextView comments;
+    TextView Kommentare;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answers);
-        comments = findViewById(R.id.comments);
+        Kommentare = findViewById(R.id.Kommentare);
         recyclerView = findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(AnswersActivity.this));
         recyclerView.setHasFixedSize(false);
@@ -61,18 +61,18 @@ public class AnswersActivity extends AppCompatActivity {
                             questions.clear();
                             answers.clear();
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                if (dataSnapshot.child("questionText").exists()) {
+                                if (dataSnapshot.child("Fragetext").exists()) {
                                     Log.d("dataa", dataSnapshot.toString());
-//                                if (dataSnapshot.child("questionText").exists()) {
-                                    String questionText = dataSnapshot.child("questionText").getValue().toString();
-                                    String selectedOptionText = dataSnapshot.child("selectedOptionText").getValue().toString();
-                                    questions.add(questionText);
-                                    answers.add(selectedOptionText);
+//                                if (dataSnapshot.child("Fragetext").exists()) {
+                                    String Fragetext = dataSnapshot.child("Fragetext").getValue().toString();
+                                    String AusgewählterOptionstext = dataSnapshot.child("AusgewählterOptionstext").getValue().toString();
+                                    questions.add(Fragetext);
+                                    answers.add(AusgewählterOptionstext);
                                 }
 
-                                if(dataSnapshot.child("comments").exists())
+                                if(dataSnapshot.child("Kommentare").exists())
                                 {
-                                    comments.setText(dataSnapshot.child("comments").getValue().toString());
+                                    Kommentare.setText(dataSnapshot.child("Kommentare").getValue().toString());
                                 }
                             }
                         }
